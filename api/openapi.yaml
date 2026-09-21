@@ -1,0 +1,250 @@
+openapi: 3.0.1
+info:
+  title: Sandbox API
+  version: '1.0'
+servers:
+  - url: http://localhost:8081
+paths:
+  /api/v1/sandbox/accounts:
+    get:
+      summary: Получить счета
+      operationId: getAccount
+      responses:
+        200:
+          description: Ok
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SandboxAccountViewDto'
+    post:
+      summary: Создать учебный счёт
+      operationId: postAccount
+      requestBody:
+        description: Название счёта
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostAccountRequest'
+      responses:
+        201:
+          description: Created
+          content:
+            '*/*':
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/SandboxAccountViewDto'
+  /api/v1/sandbox/accounts/sync:
+    post:
+      summary: Синхронизировать счета
+      operationId: postAccountsSync
+      responses:
+        200:
+          description: Ok
+          content:
+            '*/*':
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/SandboxAccountViewDto'
+  /api/v1/sandbox/accounts/{accountId}/pay-ins:
+    parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      summary: Пополнить счёт
+      operationId: postAccountsPayIns
+      requestBody:
+        description: Значение суммы
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostAccountPayInsRequest'
+      responses:
+        200:
+          description: Ok
+          content:
+            '*/*':
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/SandboxAccountViewDto'
+  /api/v1/sandbox/accounts/{accountId}/portfolio/refresh:
+    parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      summary: Обновить стоимость портфеля
+      operationId: postPortfolioRefresh
+      responses:
+        200:
+          description: Ok
+          content:
+            '*/*':
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/SandboxAccountViewDto'
+  /api/v1/sandbox/accounts/{accountId}/orders:
+    parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: Получить локальную витрину заявок
+      operationId: getOrders
+      responses:
+        200:
+          description: Ok
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SandboxOrderViewDto'
+    post:
+      summary: Создать заявку
+      operationId: postOrder
+      requestBody:
+        description: Запрос заявки
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrderRequest'
+      responses:
+        201:
+          description: Created
+          content:
+            '*/*':
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/SandboxOrderViewDto'
+  /api/v1/sandbox/accounts/{accountId}/orders/sync:
+    parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      summary: Синхронизировать активные заявки
+      operationId: postOrdersSync
+      responses:
+        200:
+          description: Ok
+          content:
+            '*/*':
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/SandboxOrderViewDto'
+  /api/v1/sandbox/accounts/{accountId}/orders/{orderId}:
+    parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: orderId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    delete:
+      summary: Отменить заявку
+      operationId: deleteOrder
+      responses:
+        200:
+          description: Ok
+          content:
+            '*/*':
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/SandboxOrderViewDto'
+components:
+  schemas:
+    SandboxAccountViewDto:
+      type: object
+      properties:
+        accountId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          type: string
+        totalAmountRub:
+          type: number
+          format: double
+        updatedAt:
+          type: string
+          format: datetime
+    SandboxOrderViewDto:
+      type: object
+      properties:
+        orderId:
+          type: string
+          format: uuid
+        accountId:
+          type: string
+          format: uuid
+        instrumentUid:
+          type: string
+          format: uuid
+        direction:
+          type: string
+        quantity:
+          type: integer
+          format: int64
+        orderType:
+          type: string
+        price:
+          type: number
+          format: double
+        status:
+          type: string
+        updatedAt:
+          type: string
+          format: datetime
+    PostAccountRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    PostAccountPayInsRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+    PostOrderRequest:
+      type: object
+      properties:
+        instrumentUid:
+          type: string
+          format: uuid
+        direction:
+          type: string
+        quantity:
+          type: integer
+          format: int64
+        orderType:
+          type: string
