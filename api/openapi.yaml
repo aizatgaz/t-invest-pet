@@ -13,11 +13,29 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SandboxAccountViewDto'
+                  $ref: '#/components/schemas/SandboxAccountViewResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       summary: Создать учебный счёт
       operationId: postAccount
@@ -31,11 +49,27 @@ paths:
         201:
           description: Created
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/SandboxAccountViewDto'
+                $ref: '#/components/schemas/SandboxAccountViewResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/v1/sandbox/accounts/sync:
     post:
       summary: Синхронизировать счета
@@ -44,11 +78,29 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
+                type: array
                 items:
-                  $ref: '#/components/schemas/SandboxAccountViewDto'
+                  $ref: '#/components/schemas/SandboxAccountViewResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/v1/sandbox/accounts/{accountId}/pay-ins:
     parameters:
       - name: accountId
@@ -70,11 +122,27 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/SandboxAccountViewDto'
+                $ref: '#/components/schemas/SandboxAccountViewResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/v1/sandbox/accounts/{accountId}/portfolio/refresh:
     parameters:
       - name: accountId
@@ -90,11 +158,27 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/SandboxAccountViewDto'
+                $ref: '#/components/schemas/SandboxAccountViewResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/v1/sandbox/accounts/{accountId}/orders:
     parameters:
       - name: accountId
@@ -110,11 +194,29 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/SandboxOrderViewDto'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       summary: Создать заявку
       operationId: postOrder
@@ -128,11 +230,27 @@ paths:
         201:
           description: Created
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/SandboxOrderViewDto'
+                $ref: '#/components/schemas/SandboxOrderViewDto'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/v1/sandbox/accounts/{accountId}/orders/sync:
     parameters:
       - name: accountId
@@ -148,11 +266,29 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
+                type: array
                 items:
                   $ref: '#/components/schemas/SandboxOrderViewDto'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/v1/sandbox/accounts/{accountId}/orders/{orderId}:
     parameters:
       - name: accountId
@@ -174,14 +310,30 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/SandboxOrderViewDto'
+                $ref: '#/components/schemas/SandboxOrderViewDto'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    SandboxAccountViewDto:
+    SandboxAccountViewResponse:
       type: object
       properties:
         accountId:
@@ -196,8 +348,8 @@ components:
           format: double
         updatedAt:
           type: string
-          format: datetime
-    SandboxOrderViewDto:
+          format: date-time
+    SandboxOrderViewResponse:
       type: object
       properties:
         orderId:
@@ -223,7 +375,7 @@ components:
           type: string
         updatedAt:
           type: string
-          format: datetime
+          format: date-time
     PostAccountRequest:
       type: object
       properties:
@@ -247,4 +399,11 @@ components:
           type: integer
           format: int64
         orderType:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
           type: string

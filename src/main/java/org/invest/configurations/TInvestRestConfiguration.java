@@ -6,16 +6,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
-import static org.invest.constants.TInvestProperties.BASE_URL;
+import static org.invest.constants.TInvestProperties.TINVEST_URL;
 
 @Configuration
 public class TInvestRestConfiguration {
 
     @Bean
-    public RestClient tInvestRestClient(String token) {
+    public RestClient tInvestRestClient(
+            String token
+    ) {
         return RestClient.builder()
                 .baseUrl(
-                        BASE_URL
+                        TINVEST_URL
                 )
                 .defaultHeader(
                         HttpHeaders.AUTHORIZATION,
