@@ -7,8 +7,15 @@ import java.util.UUID;
 
 @Data
 @Accessors(chain = true)
-public class OpenSandboxAccountResponse {
+public class GetSandboxPortfolioRequest {
 
     private UUID accountId;
+    private Currency currency;
+
+    public enum Currency {
+        RUB,
+        USD,
+        EUR
+    }
 
 }
