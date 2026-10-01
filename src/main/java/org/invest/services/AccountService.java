@@ -87,7 +87,8 @@ public class AccountService {
                 .setAccountId(account.getId())
                 .setStatus(status.name())
                 .setName(account.getName())
-                .setTotalAmountRub(totalAmount));
+                .setTotalAmountRub(totalAmount)
+                .setUpdatedAt(LocalDateTime.now()));
     }
 
     private void deleteAccounts(

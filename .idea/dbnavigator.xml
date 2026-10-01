@@ -11,19 +11,19 @@
   </component>
   <component name="DBNavigator.Project.DatabaseAssistantManager">
     <assistants>
-      <assistant-state connection-id="virtual-postgres-connection" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
-        <tools />
-        <mcp-servers />
-      </assistant-state>
       <assistant-state connection-id="virtual-postgres-connection" assistant-type="PUBLIC" default-profile-name="" selected-chat-id="" availability="AVAILABLE" acknowledgement="NONE" selected="true">
         <tools />
         <mcp-servers />
       </assistant-state>
-      <assistant-state connection-id="32ec187d-5e2e-42b5-b074-5e7dd0ff4a35" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
+      <assistant-state connection-id="virtual-postgres-connection" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
         <tools />
         <mcp-servers />
       </assistant-state>
       <assistant-state connection-id="32ec187d-5e2e-42b5-b074-5e7dd0ff4a35" assistant-type="PUBLIC" default-profile-name="" selected-chat-id="" availability="AVAILABLE" acknowledgement="NONE" selected="true">
+        <tools />
+        <mcp-servers />
+      </assistant-state>
+      <assistant-state connection-id="32ec187d-5e2e-42b5-b074-5e7dd0ff4a35" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
         <tools />
         <mcp-servers />
       </assistant-state>

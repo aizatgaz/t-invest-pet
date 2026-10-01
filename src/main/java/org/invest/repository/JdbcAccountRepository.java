@@ -32,7 +32,7 @@ public class JdbcAccountRepository implements Repository<Account> {
             UUID id
     ) {
         String sql = """
-                select * from accounts where account_id = ?;
+                select * from accounts where account_id = :id;
                 """;
         return jdbcTemplate.query(sql, Map.of("id", id), ACCOUNT_ROW_MAPPER)
                 .stream()
@@ -49,7 +49,7 @@ public class JdbcAccountRepository implements Repository<Account> {
 
     public List<Account> findByStatus(String status) {
         String sql = """
-                select * from accounts where status = ?;
+                select * from accounts where status = :status;
                 """;
         return jdbcTemplate.query(sql, Map.of("status", status), ACCOUNT_ROW_MAPPER);
     }
@@ -59,8 +59,8 @@ public class JdbcAccountRepository implements Repository<Account> {
             Account account
     ) {
         String sql = """
-                insert into accounts (:account_id, :name, :status, :total_amount_rub, :updated_at)
-                values (?, ?, ?, ?, ?)
+                insert into accounts (account_id, name, status, total_amount_rub, updated_at)
+                values (:account_id, :name, :status, :total_amount_rub, :updated_at) returning *;
                 """;
         var params = new MapSqlParameterSource()
                 .addValue("account_id", account.getAccountId())
@@ -76,7 +76,7 @@ public class JdbcAccountRepository implements Repository<Account> {
             UUID id
     ) {
         String sql = """
-                delete from accounts where account_id = ?;
+                delete from accounts where account_id = :id;
                 """;
         jdbcTemplate.update(sql, Map.of("id", id));
     }

@@ -18,7 +18,7 @@ status varchar(32) not null,
 updated_at timestamptz not null,
 
 constraint fk_orders_account
-foreign key (account_id) references orders (account_id)
+foreign key (account_id) references accounts (account_id)
 );
 
 create index idx_orders_acount_id on orders (account_id);

@@ -18,7 +18,7 @@ public class SandboxService {
 
     private final TInvestRestConfiguration tInvestRestConfiguration;
     private final ObjectMapper objectMapper;
-    @Value("tinvest.token")
+    @Value("${tinvest.token}")
     private String token;
 
     @SneakyThrows

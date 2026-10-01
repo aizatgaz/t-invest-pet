@@ -36,7 +36,7 @@ public class JdbcOrderRepository implements Repository<Order> {
             UUID id
     ) {
         String sql = """
-                select * from orders where order_id = ?;
+                select * from orders where order_id = :id;
                 """;
         return jdbcTemplate.query(sql, Map.of("id", id), ORDER_ROW_MAPPER)
                 .stream()
@@ -56,9 +56,10 @@ public class JdbcOrderRepository implements Repository<Order> {
             Order order
     ) {
         String sql = """
-                insert into orders (:order_id, :account_id, :instrument_id, :direction,
-                :quantity, :order_type, :price, :status, :updated_at)
-                values (?, ?, ?, ?, ?)
+                insert into orders (order_id, account_id, instrument_id, direction,
+                quantity, order_type, price, status, updated_at)
+                values (:order_id, :account_id, :instrument_id, :direction,
+                :quantity, :order_type, :price, :status, :updated_at) returning *;
                 """;
         var params = new MapSqlParameterSource()
                 .addValue("orderId", order.getOrderId())
@@ -79,7 +80,7 @@ public class JdbcOrderRepository implements Repository<Order> {
             UUID id
     ) {
         String sql = """
-                delete from orders where order_id = ?;
+                delete from orders where order_id = :id;
                 """;
         jdbcTemplate.update(sql, Map.of("id", id));
     }
