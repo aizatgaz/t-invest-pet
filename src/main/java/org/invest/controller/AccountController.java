@@ -2,12 +2,10 @@ package org.invest.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.invest.dto.db.Account;
+import org.invest.dto.sandbox_service.OpenSandboxAccountRequest;
 import org.invest.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,9 +28,9 @@ public class AccountController {
 
     @PostMapping(APP_BASE_PATH)
     public Account createAccount(
-            @RequestParam("name") String name
+            @RequestBody OpenSandboxAccountRequest request
     ) {
-        return accountService.createAccount(name);
+        return accountService.createAccount(request.getName());
     }
 
 }
