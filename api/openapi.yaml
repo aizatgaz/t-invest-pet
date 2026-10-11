@@ -13,11 +13,11 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SandboxAccountViewDto'
+                  $ref: '#/components/schemas/SandboxAccountViewResponse'
     post:
       summary: Создать учебный счёт
       operationId: postAccount
@@ -31,11 +31,9 @@ paths:
         201:
           description: Created
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/SandboxAccountViewDto'
+                $ref: '#/components/schemas/SandboxAccountViewResponse'
   /api/v1/sandbox/accounts/sync:
     post:
       summary: Синхронизировать счета
@@ -44,11 +42,11 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
+                type: array
                 items:
-                  $ref: '#/components/schemas/SandboxAccountViewDto'
+                  $ref: '#/components/schemas/SandboxAccountViewResponse'
   /api/v1/sandbox/accounts/{accountId}/pay-ins:
     parameters:
       - name: accountId
@@ -70,11 +68,9 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/SandboxAccountViewDto'
+                $ref: '#/components/schemas/SandboxAccountViewResponse'
   /api/v1/sandbox/accounts/{accountId}/portfolio/refresh:
     parameters:
       - name: accountId
@@ -90,11 +86,9 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/SandboxAccountViewDto'
+                $ref: '#/components/schemas/SandboxAccountViewResponse'
   /api/v1/sandbox/accounts/{accountId}/orders:
     parameters:
       - name: accountId
@@ -110,11 +104,11 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SandboxOrderViewDto'
+                  $ref: '#/components/schemas/SandboxOrderViewResponse'
     post:
       summary: Создать заявку
       operationId: postOrder
@@ -128,11 +122,9 @@ paths:
         201:
           description: Created
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/SandboxOrderViewDto'
+                $ref: '#/components/schemas/SandboxOrderViewResponse'
   /api/v1/sandbox/accounts/{accountId}/orders/sync:
     parameters:
       - name: accountId
@@ -148,11 +140,11 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
+                type: array
                 items:
-                  $ref: '#/components/schemas/SandboxOrderViewDto'
+                  $ref: '#/components/schemas/SandboxOrderViewResponse'
   /api/v1/sandbox/accounts/{accountId}/orders/{orderId}:
     parameters:
       - name: accountId
@@ -174,14 +166,12 @@ paths:
         200:
           description: Ok
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/SandboxOrderViewDto'
+                $ref: '#/components/schemas/SandboxOrderViewResponse'
 components:
   schemas:
-    SandboxAccountViewDto:
+    SandboxAccountViewResponse:
       type: object
       properties:
         accountId:
@@ -196,8 +186,8 @@ components:
           format: double
         updatedAt:
           type: string
-          format: datetime
-    SandboxOrderViewDto:
+          format: date-time
+    SandboxOrderViewResponse:
       type: object
       properties:
         orderId:
@@ -223,7 +213,7 @@ components:
           type: string
         updatedAt:
           type: string
-          format: datetime
+          format: date-time
     PostAccountRequest:
       type: object
       properties:

@@ -1,21 +1,27 @@
 package org.invest.configurations;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
-import static org.invest.constants.TInvestProperties.BASE_URL;
-
 @Configuration
-public class TInvestRestConfiguration {
+@PropertySource("classpath:tinvest.yaml")
+public class TInvestRestConfig {
+
+    @Value("${tinvest.token}")
+    private String token;
+    @Value("${tinvest.url}")
+    private String url;
 
     @Bean
-    public RestClient tInvestRestClient(String token) {
+    public RestClient tInvestRestClient() {
         return RestClient.builder()
                 .baseUrl(
-                        BASE_URL
+                        url
                 )
                 .defaultHeader(
                         HttpHeaders.AUTHORIZATION,
