@@ -15,7 +15,8 @@
         <maven.compiler.release>21</maven.compiler.release>
         <spring.version>6.2.11</spring.version>
         <jackson.version>2.21.2</jackson.version>
-        <flyway.version>13.7.0</flyway.version>
+        <liquibase.version>5.0.4</liquibase.version>
+        <hikari.version>7.1.0</hikari.version>
     </properties>
 
     <dependencies>
@@ -55,6 +56,11 @@
             <artifactId>postgresql</artifactId>
             <version>42.7.5</version>
         </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${hikari.version}</version>
+        </dependency>
 
         <!--lombok-->
         <dependency>
@@ -92,15 +98,9 @@
 
         <!-- Миграции в бд -->
         <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-            <version>${flyway.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-database-postgresql</artifactId>
-            <version>${flyway.version}</version>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
         </dependency>
     </dependencies>
 

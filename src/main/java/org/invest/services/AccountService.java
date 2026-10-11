@@ -1,14 +1,14 @@
 package org.invest.services;
 
 import lombok.RequiredArgsConstructor;
+import org.invest.api.SandboxApi;
 import org.invest.dto.db.Account;
 import org.invest.dto.sandbox_service.GetSandboxAccountRequest;
 import org.invest.dto.sandbox_service.GetSandboxAccountRequest.AccountStatus;
 import org.invest.dto.sandbox_service.GetSandboxAccountResponse;
 import org.invest.dto.sandbox_service.GetSandboxPortfolioRequest;
 import org.invest.dto.sandbox_service.OpenSandboxAccountRequest;
-import org.invest.repository.JdbcAccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.invest.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +24,8 @@ import static org.invest.dto.sandbox_service.GetSandboxAccountRequest.AccountSta
 @RequiredArgsConstructor
 public class AccountService {
 
-    @Autowired
-    private final SandboxService sandboxService;
-    @Autowired
-    private final JdbcAccountRepository accountRepository;
+    private final SandboxApi sandboxApi;
+    private final AccountRepository accountRepository;
 
     @Transactional
     public List<Account> findAccountsByStatus(
@@ -35,7 +33,7 @@ public class AccountService {
     ) {
         var request = new GetSandboxAccountRequest()
                 .setStatus(status);
-        var getSandboxAccountResponse = sandboxService.getSandboxAccount(request);
+        var getSandboxAccountResponse = sandboxApi.getSandboxAccount(request);
         var idsInSandbox = getSandboxAccountResponse.getAccounts()
                 .stream()
                 .filter(acc -> acc.getStatus().equals(status.name()))
@@ -77,7 +75,7 @@ public class AccountService {
                 .filter(acc -> id.equals(acc.getId()))
                 .findFirst()
                 .get();
-        var sandboxPortfolio = sandboxService.getSandboxPortfolio(
+        var sandboxPortfolio = sandboxApi.getSandboxPortfolio(
                 new GetSandboxPortfolioRequest()
                         .setCurrency(GetSandboxPortfolioRequest.Currency.RUB)
                         .setAccountId(id)
@@ -104,15 +102,16 @@ public class AccountService {
     public Account createAccount(
             String name
     ) {
-        var sandboxAccountResponse = sandboxService.openSandboxAccount(
+        var sandboxAccountResponse = sandboxApi.openSandboxAccount(
                 new OpenSandboxAccountRequest().setName(name)
         );
-
-        return accountRepository.save(new Account()
+        var account = new Account()
                 .setTotalAmountRub(BigDecimal.ZERO)
                 .setName(name)
                 .setAccountId(sandboxAccountResponse.getAccountId())
                 .setStatus(ACCOUNT_STATUS_OPEN.name())
-                .setUpdatedAt(LocalDateTime.now()));
+                .setUpdatedAt(LocalDateTime.now());
+        accountRepository.save(account);
+        return account;
     }
 }

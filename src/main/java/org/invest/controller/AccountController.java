@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.invest.dto.db.Account;
 import org.invest.dto.sandbox_service.OpenSandboxAccountRequest;
 import org.invest.services.AccountService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import static org.invest.dto.sandbox_service.GetSandboxAccountRequest.AccountSta
 @RequiredArgsConstructor
 public class AccountController {
 
-    @Autowired
     private final AccountService accountService;
 
     @GetMapping(APP_BASE_PATH)

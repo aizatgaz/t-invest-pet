@@ -8,19 +8,20 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
-import static org.invest.constants.TInvestProperties.TINVEST_URL;
-
 @Configuration
-@PropertySource("classpath:tinvest.properties")
-public class TInvestRestConfiguration {
+@PropertySource("classpath:tinvest.yaml")
+public class TInvestRestConfig {
+
+    @Value("${tinvest.token}")
+    private String token;
+    @Value("${tinvest.url}")
+    private String url;
 
     @Bean
-    public RestClient tInvestRestClient(
-            @Value("${tinvest.token}") String token
-    ) {
+    public RestClient tInvestRestClient() {
         return RestClient.builder()
                 .baseUrl(
-                        TINVEST_URL
+                        url
                 )
                 .defaultHeader(
                         HttpHeaders.AUTHORIZATION,
