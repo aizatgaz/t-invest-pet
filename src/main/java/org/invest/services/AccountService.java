@@ -3,11 +3,8 @@ package org.invest.services;
 import lombok.RequiredArgsConstructor;
 import org.invest.api.SandboxApi;
 import org.invest.dto.db.Account;
-import org.invest.dto.sandbox_service.GetSandboxAccountRequest;
+import org.invest.dto.sandbox_service.*;
 import org.invest.dto.sandbox_service.GetSandboxAccountRequest.AccountStatus;
-import org.invest.dto.sandbox_service.GetSandboxAccountResponse;
-import org.invest.dto.sandbox_service.GetSandboxPortfolioRequest;
-import org.invest.dto.sandbox_service.OpenSandboxAccountRequest;
 import org.invest.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +25,24 @@ public class AccountService {
     private final AccountRepository accountRepository;
 
     @Transactional
-    public List<Account> findAccountsByStatus(
+    public List<SandboxAccountViewResponse> findAccountsByStatus(
+            AccountStatus status
+    ) {
+        saveAccounts(status);
+
+        var response = new ArrayList<SandboxAccountViewResponse>();
+        for (Account account : accountRepository.findByStatus(status.name())) {
+            response.add(new SandboxAccountViewResponse()
+                    .setAccountId(account.getAccountId())
+                    .setName(account.getName())
+                    .setStatus(account.getStatus())
+                    .setTotalAmountRub(account.getTotalAmountRub())
+                    .setUpdatedAt(account.getUpdatedAt()));
+        }
+        return response;
+    }
+
+    private void saveAccounts(
             AccountStatus status
     ) {
         var request = new GetSandboxAccountRequest()
@@ -41,31 +55,15 @@ public class AccountService {
                 .sorted()
                 .toList();
 
-        var repositoryByStatus = accountRepository.findByStatus(status.name());
-        var idsInDb = repositoryByStatus.stream()
-                .map(org.invest.dto.db.Account::getAccountId)
+        var idsInDb = accountRepository.findByStatus(status.name())
+                .stream()
+                .map(Account::getAccountId)
                 .sorted()
                 .toList();
 
-        if (idsInDb.equals(idsInSandbox)) {
-            return repositoryByStatus;
-        } else {
-            saveAccounts(status, idsInSandbox, idsInDb, getSandboxAccountResponse);
-        }
-        return accountRepository.findByStatus(status.name());
-    }
-
-    private void saveAccounts(
-            AccountStatus status,
-            List<UUID> idsInSandbox,
-            List<UUID> idsInDb,
-            GetSandboxAccountResponse getSandboxAccountResponse
-    ) {
         var idsToCreate = new ArrayList<>(idsInSandbox);
         idsToCreate.removeAll(idsInDb);
-        idsToCreate.forEach(id -> {
-            createAccount(status, getSandboxAccountResponse, id);
-        });
+        idsToCreate.forEach(id -> createAccount(status, getSandboxAccountResponse, id));
         deleteAccounts(idsInDb, idsToCreate);
     }
 
@@ -80,7 +78,7 @@ public class AccountService {
                         .setCurrency(GetSandboxPortfolioRequest.Currency.RUB)
                         .setAccountId(id)
         );
-        var totalAmount = BigDecimal.valueOf(Long.valueOf(sandboxPortfolio.getTotalAmountPortfolio().getUnits()));
+        var totalAmount = BigDecimal.valueOf(Long.parseLong(sandboxPortfolio.getTotalAmountPortfolio().getUnits()));
         accountRepository.save(new Account()
                 .setAccountId(account.getId())
                 .setStatus(status.name())
@@ -99,7 +97,7 @@ public class AccountService {
     }
 
     @Transactional
-    public Account createAccount(
+    public SandboxAccountViewResponse createAccount(
             String name
     ) {
         var sandboxAccountResponse = sandboxApi.openSandboxAccount(
@@ -112,6 +110,11 @@ public class AccountService {
                 .setStatus(ACCOUNT_STATUS_OPEN.name())
                 .setUpdatedAt(LocalDateTime.now());
         accountRepository.save(account);
-        return account;
+        return new SandboxAccountViewResponse()
+                .setAccountId(account.getAccountId())
+                .setName(account.getName())
+                .setStatus(account.getStatus())
+                .setTotalAmountRub(account.getTotalAmountRub())
+                .setUpdatedAt(account.getUpdatedAt());
     }
 }

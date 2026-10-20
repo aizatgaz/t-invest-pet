@@ -1,8 +1,8 @@
 package org.invest.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.invest.dto.db.Account;
 import org.invest.dto.sandbox_service.OpenSandboxAccountRequest;
+import org.invest.dto.sandbox_service.SandboxAccountViewResponse;
 import org.invest.services.AccountService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,17 +18,16 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping(APP_BASE_PATH)
-    public List<Account> getAccounts(
+    public List<SandboxAccountViewResponse> getAccounts(
             @RequestParam("status") AccountStatus status
     ) {
         return accountService.findAccountsByStatus(status);
     }
 
     @PostMapping(APP_BASE_PATH)
-    public Account createAccount(
+    public SandboxAccountViewResponse createAccount(
             @RequestBody OpenSandboxAccountRequest request
     ) {
         return accountService.createAccount(request.getName());
     }
-
 }
