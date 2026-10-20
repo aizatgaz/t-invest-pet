@@ -1,0 +1,7 @@
+tinvest:
+  token: ""
+  url: "https://sandbox-invest-public-api.tbank.ru/rest"
+  path:
+    openSandboxAccount: "/tinkoff.public.invest.api.contract.v1.SandboxService/OpenSandboxAccount"
+    getSandboxAccount: "/tinkoff.public.invest.api.contract.v1.SandboxService/GetSandboxAccounts"
+    getSandboxPortfolio: "/tinkoff.public.invest.api.contract.v1.SandboxService/GetSandboxPortfolio"
