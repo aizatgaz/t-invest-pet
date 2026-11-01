@@ -14,6 +14,7 @@ public class TInvestRestConfig {
 
     @Value("${tinvest.token}")
     private String token;
+
     @Value("${tinvest.url}")
     private String url;
 

@@ -1,6 +1,6 @@
 package org.invest.constants;
 
-public class TInvestProperties {
+public class TInvestConstants {
     //app uri
     public static final String APP_BASE_PATH = "/api/v1/sandbox/accounts";
     public static final String ACCOUNT_SYNC = APP_BASE_PATH + "/sync";

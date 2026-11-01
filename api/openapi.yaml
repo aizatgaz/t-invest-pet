@@ -3,12 +3,28 @@ info:
   title: Sandbox API
   version: '1.0'
 servers:
-  - url: http://localhost:8081
+  - url: ../
+security:
+  - managerBearerAuth: []
 paths:
   /api/v1/sandbox/accounts:
     get:
       summary: Получить счета
       operationId: getAccount
+      parameters:
+        - name: status
+          in: query
+          required: true
+          description: Статус счетов
+          schema:
+            type: string
+            enum:
+              - ACCOUNT_STATUS_UNSPECIFIED
+              - ACCOUNT_STATUS_NEW
+              - ACCOUNT_STATUS_OPEN
+              - ACCOUNT_STATUS_CLOSED
+              - ACCOUNT_STATUS_ALL
+          example: ACCOUNT_STATUS_ALL
       responses:
         200:
           description: Ok
@@ -169,8 +185,75 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SandboxOrderViewResponse'
+  /api/support/auth:
+    post:
+      tags:
+        - Support
+      summary: Получить JWT с ролью MANAGER
+      operationId: authenticate
+      security:
+        - supportBasicAuth: [ ]
+      responses:
+        200:
+          description: JWT с ролью MANAGER успешно выдан
+          headers:
+            Cache-Control:
+              description: Запрет кеширования ответа с токеном
+              schema:
+                type: string
+            Pragma:
+              description: Запрет кеширования для клиентов HTTP/1.0
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        401:
+          description: Логин и пароль HTTP Basic отсутствуют или неверны
+          headers:
+            WWW-Authenticate:
+              description: Требуемая схема аутентификации HTTP Basic
+              schema:
+                type: string
+        403:
+          description: Доступ запрещён; для выдачи токена требуется роль SUPPORT
+
 components:
+  securitySchemes:
+    managerBearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT с ролью MANAGER, полученный через POST /api/support/auth
+    supportBasicAuth:
+      type: http
+      scheme: basic
+      description: Логин и пароль пользователя с ролью SUPPORT
   schemas:
+    TokenResponse:
+      type: object
+      required:
+        - access_token
+        - token_type
+        - expires_in
+      properties:
+        access_token:
+          type: string
+          format: jwt
+          description: Подписанный JWT с ролью MANAGER для вызова защищённых методов API
+        token_type:
+          type: string
+          enum:
+            - Bearer
+          example: Bearer
+          description: Схема передачи access_token в заголовке Authorization
+        expires_in:
+          type: integer
+          format: int64
+          minimum: 1
+          example: 1200
+          description: Срок действия access_token в секундах с момента выдачи (20 минут)
     SandboxAccountViewResponse:
       type: object
       properties:

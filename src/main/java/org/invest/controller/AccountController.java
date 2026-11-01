@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.invest.dto.sandbox_service.OpenSandboxAccountRequest;
 import org.invest.dto.sandbox_service.SandboxAccountViewResponse;
 import org.invest.services.AccountService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.invest.constants.TInvestProperties.APP_BASE_PATH;
+import static org.invest.constants.TInvestConstants.APP_BASE_PATH;
 import static org.invest.dto.sandbox_service.GetSandboxAccountRequest.AccountStatus;
 
 @RestController
@@ -18,6 +19,7 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping(APP_BASE_PATH)
+    @PreAuthorize("hasRole('MANAGER')")
     public List<SandboxAccountViewResponse> getAccounts(
             @RequestParam("status") AccountStatus status
     ) {
@@ -25,6 +27,7 @@ public class AccountController {
     }
 
     @PostMapping(APP_BASE_PATH)
+    @PreAuthorize("hasRole('MANAGER')")
     public SandboxAccountViewResponse createAccount(
             @RequestBody OpenSandboxAccountRequest request
     ) {

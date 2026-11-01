@@ -1,5 +1,5 @@
 tinvest:
-  token: ""
+  token: "t.twK7X14_GyDhmMzURDIEk4eR3Ccdz-7YTGB6BEFc1IisAYaHNodVGM8og-ASWRczALCTV6GTN8UJoXD6_7Y7xQ"
   url: "https://sandbox-invest-public-api.tbank.ru/rest"
   path:
     openSandboxAccount: "/tinkoff.public.invest.api.contract.v1.SandboxService/OpenSandboxAccount"

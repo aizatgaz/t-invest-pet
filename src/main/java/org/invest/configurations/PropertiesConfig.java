@@ -12,7 +12,10 @@ public class PropertiesConfig {
     @Bean
     public static PropertySourcesPlaceholderConfigurer properties() {
         var yaml = new YamlPropertiesFactoryBean();
-        yaml.setResources(new ClassPathResource("tinvest.yaml"));
+        yaml.setResources(
+                new ClassPathResource("tinvest.yaml"),
+                new ClassPathResource("security.yaml")
+        );
         var configurer = new PropertySourcesPlaceholderConfigurer();
         configurer.setProperties(yaml.getObject());
         return configurer;

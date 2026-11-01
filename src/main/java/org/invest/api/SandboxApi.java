@@ -1,21 +1,21 @@
 package org.invest.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.invest.configurations.TInvestRestConfig;
 import org.invest.dto.sandbox_service.*;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 
 @Service
 @RequiredArgsConstructor
 @PropertySource("classpath:tinvest.yaml")
 public class SandboxApi {
 
-    private final TInvestRestConfig tInvestRestConfig;
-    private final ObjectMapper objectMapper;
+    @Qualifier("tInvestRestClient")
+    private final RestClient restClient;
 
     @Value("${tinvest.path.openSandboxAccount}")
     private String openSandBoxAccount;
@@ -30,10 +30,9 @@ public class SandboxApi {
     public OpenSandboxAccountResponse openSandboxAccount(
             OpenSandboxAccountRequest request
     ) {
-        return tInvestRestConfig.tInvestRestClient()
-                .post()
+        return restClient.post()
                 .uri(openSandBoxAccount)
-                .body(objectMapper.writeValueAsString(request))
+                .body(request)
                 .retrieve()
                 .toEntity(OpenSandboxAccountResponse.class)
                 .getBody();
@@ -43,10 +42,9 @@ public class SandboxApi {
     public GetSandboxAccountResponse getSandboxAccount(
             GetSandboxAccountRequest request
     ) {
-        return tInvestRestConfig.tInvestRestClient()
-                .post()
+        return restClient.post()
                 .uri(getSandBoxAccount)
-                .body(objectMapper.writeValueAsString(request))
+                .body(request)
                 .retrieve()
                 .toEntity(GetSandboxAccountResponse.class)
                 .getBody();
@@ -56,10 +54,9 @@ public class SandboxApi {
     public GetSandboxPortfolioResponse getSandboxPortfolio(
             GetSandboxPortfolioRequest request
     ) {
-        return tInvestRestConfig.tInvestRestClient()
-                .post()
+        return restClient.post()
                 .uri(getSandBoxPortfolio)
-                .body(objectMapper.writeValueAsString(request))
+                .body(request)
                 .retrieve()
                 .toEntity(GetSandboxPortfolioResponse.class)
                 .getBody();
