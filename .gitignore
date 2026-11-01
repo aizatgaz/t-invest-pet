@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# Local authentication credentials
+/src/main/resources/security.yaml
